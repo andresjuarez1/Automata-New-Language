@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 const patterns = [
-  { type: 'num', regex: /^num [a-zA-Z_]\w*;/ },
-  { type: 'float', regex: /^float [a-zA-Z_]\w*;/ },
-  { type: 'string', regex: /^string "[^"]*";/ }
+  { type: 'num', regex: /^num [a-zA-Z_]\w*(\s*=\s*\d+);|^num [a-zA-Z_]\w*;/ },
+  { type: 'float', regex: /^float [a-zA-Z_]\w*(\s*=\s*[\d.]+);|^float [a-zA-Z_]\w*;/ },
+  { type: 'string', regex: /^string [a-zA-Z_]\w*;|^string [a-zA-Z_]\w*="[^"]+";/ },
 ];
 
 function App() {
@@ -12,23 +12,29 @@ function App() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const parseVariableDeclaration = () => {
-    const remainingCode = code.trim();
-    for (const pattern of patterns) {
-      const match = remainingCode.match(pattern.regex);
-      if (match) {
-        const variableDeclaration = match[0];
-        setParsedVariables([...parsedVariables, variableDeclaration]);
-        setCode(remainingCode.substring(variableDeclaration.length));
+    const lines = code.trim().split('\n');
+  
+    for (const line of lines) {
+      let trimmedLine = line.trim();
+      for (const pattern of patterns) {
+        const match = trimmedLine.match(pattern.regex);
+        if (match) {
+          const variableDeclaration = match[0];
+          setParsedVariables((prevParsedVariables) => [...prevParsedVariables, variableDeclaration]);
+          trimmedLine = trimmedLine.substring(variableDeclaration.length).trim();
+        }
+      }
+      if (trimmedLine) {
+        setErrorMessage(`Hay un error en la escritura del código. Revise: "${trimmedLine}"`);
         return;
       }
     }
-    const firstWord = remainingCode.split(' ')[0];
-    setErrorMessage(`La declaración de variable no es válida. Revisar: "${firstWord}"`);
   };
 
   const clearErrorMessage = () => {
     setErrorMessage(null);
   };
+
 
   return (
     <div className="container mx-auto p-4">
@@ -47,7 +53,7 @@ function App() {
         Analizar
       </button>
       <div className="mt-4">
-        <h3 className="text-xl font-semibold">Variables Analizadas:</h3>
+        <h3 className="text-xl font-semibold">Escrituras Correctas:</h3>
         <ul className="list-disc pl-6">
           {parsedVariables.map((variable, index) => (
             <li key={index}>{variable}</li>
