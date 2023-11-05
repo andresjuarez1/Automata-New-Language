@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Analizador de Variables</h1>
+      <h1 className="text-3xl font-bold mb-4">COBOLTSCRIPT</h1>
       <textarea
         className="border p-2 rounded-md w-full"
         value={code}
