@@ -31,7 +31,7 @@ const patterns = [
   {
     type: "ifStatement",
     regex:
-      /^if\s*\(\s*[a-zA-Z_]\w*\s*(==|>=|<=|<|>)\s*[1-9]+\s*\)\s*{}(else){}/,
+      /^if\s*\(\s*[a-zA-Z_]\w*\s*(==|>=|<=|<|>)\s*[1-9]+\s*\)\s*{\s*}(else)\s*{\s*}/,
   },
 ];
 
