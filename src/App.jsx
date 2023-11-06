@@ -4,7 +4,18 @@ const patterns = [
   { type: 'num', regex: /^num [a-zA-Z_]\w*(\s*=\s*\d+);|^num [a-zA-Z_]\w*;/ },
   { type: 'float', regex: /^float [a-zA-Z_]\w*(\s*=\s*[\d.]+);|^float [a-zA-Z_]\w*;/ },
   { type: 'string', regex: /^string [a-zA-Z_]\w*;|^string [a-zA-Z_]\w*\s*=\s*"[^"]+";/ },
-  { type: 'function', regex: /^function [a-zA-Z_]\w*\(([^)]*(num|float|string)),([^)]*(num|float|string))\)\s*:\s*(num|float|string)\s*{([^}]+)}/ } //function mampo(a:string, b:float) : numa { return a+b; } esta es la entrada válida
+  {
+    type: 'function',
+    regex: /^function [a-zA-Z_]\w*\(([^)]*(num|float|string)),([^)]*(num|float|string))\)\s*:\s*(num|float|string)\s*{([^}]+)}/
+  },
+  {
+    type: 'whileLoop',
+    regex: /^while\s*\(\s*(num|float|string)\s+[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+\s*\)\s*{/
+  },
+  {
+    type: 'forLoop',
+    regex: /^for\s*\((num)\s+[a-zA-Z_]\w*\s*=\s*\d+;\s*[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+;\s*[a-zA-Z_]\w*\+\+?\)\s*{/
+  },
 ];
 
 function App() {
@@ -16,18 +27,33 @@ function App() {
     const lines = code.trim().split('\n');
     for (const line of lines) {
       let trimmedLine = line.trim();
+      let foundMatchingPattern = false;
+
       for (const pattern of patterns) {
         const match = trimmedLine.match(pattern.regex);
         if (match) {
-          if (pattern.type === 'function') {
+          foundMatchingPattern = true;
+          if (pattern.type === 'whileLoop') {
+            setParsedVariables(prevParsedVariables => [
+              ...prevParsedVariables,
+              'Ciclo while detectado',
+            ]);
+            break;
+          } else if (pattern.type === 'forLoop') {
+            setParsedVariables(prevParsedVariables => [
+              ...prevParsedVariables,
+              'Ciclo for detectado',
+            ]);
+            break;
+          } else if (pattern.type === 'function') {
             const functionName = match[0].match(/function ([a-zA-Z_]\w*)/)[1];
-            setParsedVariables((prevParsedVariables) => [
+            setParsedVariables(prevParsedVariables => [
               ...prevParsedVariables,
               `Function: ${functionName}`,
             ]);
           } else {
             const variableDeclaration = match[0];
-            setParsedVariables((prevParsedVariables) => [
+            setParsedVariables(prevParsedVariables => [
               ...prevParsedVariables,
               variableDeclaration,
             ]);
@@ -35,8 +61,9 @@ function App() {
           trimmedLine = trimmedLine.substring(match[0].length).trim();
         }
       }
-      if (trimmedLine) {
-        setErrorMessage(`Hay un error en la escritura del código. Revise: "${trimmedLine}"`);
+
+      if (!foundMatchingPattern && trimmedLine) {
+        setErrorMessage(`Error en la escritura del código: "${trimmedLine}"`);
         return;
       }
     }
@@ -52,7 +79,7 @@ function App() {
       <textarea
         className="border p-6 h-[400px] rounded-md w-full"
         value={code}
-        onChange={(e) => setCode(e.target.value)}
+        onChange={e => setCode(e.target.value)}
         placeholder="Ingresa tu código aquí..."
         rows="5"
       ></textarea>
