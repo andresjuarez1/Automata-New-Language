@@ -4,7 +4,18 @@ const patterns = [
   { type: 'num', regex: /^num [a-zA-Z_]\w*(\s*=\s*\d+);|^num [a-zA-Z_]\w*;/ },
   { type: 'float', regex: /^float [a-zA-Z_]\w*(\s*=\s*[\d.]+);|^float [a-zA-Z_]\w*;/ },
   { type: 'string', regex: /^string [a-zA-Z_]\w*;|^string [a-zA-Z_]\w*\s*=\s*"[^"]+";/ },
-  { type: 'function', regex: /^function [a-zA-Z_]\w*\(([^)]*(num|float|string)),([^)]*(num|float|string))\)\s*:\s*(num|float|string)\s*{([^}]+)}/ } //function mampo(a:string, b:float) : numa { return a+b; } esta es la entrada válida
+  {
+    type: 'function',
+    regex: /^function [a-zA-Z_]\w*\(([^)]*(num|float|string)),([^)]*(num|float|string))\)\s*:\s*(num|float|string)\s*{([^}]+)}/
+  },
+  {
+    type: 'whileLoop',
+    regex: /^while\s*\(\s*(num|float|string)\s+[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+\s*\)\s*{/
+  },
+  {
+    type: 'forLoop',
+    regex: /^for\s*\((num)\s+[a-zA-Z_]\w*\s*=\s*\d+;\s*[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+;\s*[a-zA-Z_]\w*\+\+?\)\s*{/
+  },
 ];
 
 function App() {
