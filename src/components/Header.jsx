@@ -4,7 +4,7 @@ import PuntosIcon from '../assets/puntos-icon.svg'
 
 const Header = () => { 
   return (
-    <div className='bg-[#252525] py-2 px-3 flex items-center'>
+    <div className='bg-[#252525] py-2 px-3 flex items-center border-solid border-b-[1px] border-[#cccccc33]'>
       <img src={visualIcon} alt="Visual Studio Icon" className='h-5 w-5 mr-3'/>
       <div className='flex text-[#CCCCCC] text-xs items-center gap-4 font-normal'>
         <h2>File</h2>
