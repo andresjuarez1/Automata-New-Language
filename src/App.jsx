@@ -11,11 +11,15 @@ const patterns = [
   },
   {
     type: 'whileLoop',
-    regex: /^while\s*\(\s*(num)\s+[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+\s*\)\s*{/
+    regex: /^while\s*\(\s*(num|float|string)\s+[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+\s*\)\s*{/
   },
   {
     type: 'forLoop',
     regex: /^for\s*\((num)\s+[a-zA-Z_]\w*\s*=\s*\d+;\s*[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+;\s*[a-zA-Z_]\w*\+\+?\)\s*{/
+  },
+  {
+    type: 'ifStatement',
+    regex: /^if\s*\(\s*[a-zA-Z_]\w*\s*(==|>=|<=|<|>)\s*[1-9]+\s*\)\s*{}(else){}/,
   },
 ];
 
@@ -38,6 +42,12 @@ function App() {
             setParsedVariables(prevParsedVariables => [
               ...prevParsedVariables,
               'Ciclo while detectado',
+            ]);
+            break;
+          } else if (pattern.type === 'ifStatement') {
+            setParsedVariables(prevParsedVariables => [
+              ...prevParsedVariables,
+              'Estructura if detectada',
             ]);
             break;
           } else if (pattern.type === 'forLoop') {
