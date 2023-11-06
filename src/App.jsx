@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Header, SideBar } from './components';
 
 const patterns = [
   { type: 'num', regex: /^num [a-zA-Z_]\w*(\s*=\s*\d+);|^num [a-zA-Z_]\w*;/ },
@@ -74,10 +75,13 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">COBOLTSCRIPT</h1>
+  <>
+    <Header/>
+    <div className="flex h-screen">
+      <SideBar/>
+      <div>
       <textarea
-        className="border p-6 h-[400px] rounded-md w-full"
+        className=""
         value={code}
         onChange={e => setCode(e.target.value)}
         placeholder="Ingresa tu código aquí..."
@@ -90,7 +94,7 @@ function App() {
         Analizar
       </button>
       <div className="mt-4">
-        <h3 className="text-xl font-semibold">Escrituras Correctas:</h3>
+        <h3 className="text-xl font-semibold bg-red-500">Escrituras Correctas:</h3>
         <ul className="list-disc pl-6">
           {parsedVariables.map((variable, index) => (
             <li key={index}>{variable}</li>
@@ -105,7 +109,9 @@ function App() {
           </div>
         </div>
       )}
+      </div>
     </div>
+  </>
   );
 }
 
