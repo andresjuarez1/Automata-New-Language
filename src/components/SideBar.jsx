@@ -7,7 +7,7 @@ import Icon4 from "../assets/sidebar/Icon4.svg"
 
 const SideBar = () => {
   return (
-    <div className='w-12 bg-[#333333] flex flex-col items-center gap-6 py-3'>
+    <div className='w-12 bg-[#333333] flex flex-col items-center gap-6 py-3 h-screen'>
         <img src={Icon0} alt="Archivos" className="w-6"/>
         <img src={Icon1} alt="Archivos" className="w-6"/>
         <img src={Icon2} alt="Archivos" className="w-6"/>
