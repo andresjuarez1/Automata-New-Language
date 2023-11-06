@@ -10,7 +10,7 @@ const patterns = [
   },
   {
     type: 'whileLoop',
-    regex: /^while\s*\(\s*(num|float|string)\s+[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+\s*\)\s*{/
+    regex: /^while\s*\(\s*(num)\s+[a-zA-Z_]\w*\s*(<|>|<=|>=|==)\s*\d+\s*\)\s*{/
   },
   {
     type: 'forLoop',
