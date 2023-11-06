@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Header, SideBar, Files } from "./components";
+import PlayIcon from "./assets/play-icon.svg"
 
 const patterns = [
   { type: "num", regex: /^num [a-zA-Z_]\w*(\s*=\s*\d+);|^num [a-zA-Z_]\w*;/ },
@@ -99,37 +100,38 @@ function App() {
       <div className="flex">
         <SideBar />
         <Files />
-        <div className="mx-4 my-6">
+        <div className="w-full h-full">
           <textarea
-            className="w-full resize-none border-0 p-0 m-0 outline-none overflow-auto font-inherit text-[#FAFAFA] bg-transparent"
+            className="px-4 py-6 w-full resize-none border-0 p-0 m-0 outline-none overflow-auto font-inherit text-[#FAFAFA] bg-transparent text-sm font-normal"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="|"
             rows="5"
           ></textarea>
           <button
-            className="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
+            className="fixed top-2 right-2 text-white"
             onClick={parseVariableDeclaration}
           >
-            Analizar
+            <img src={PlayIcon} alt="Play Icon" className="h-6"/>
           </button>
-          <div className="mt-4">
-            <h3 className="text-xl font-semibold bg-red-500">
-              Escrituras Correctas:
+          <div className="px-4 py-6 absolute">
+            <h3 className="text-xs font-semibold text-[#FFFFFF]">
+              CORRECTAS
             </h3>
-            <ul className="list-disc pl-6">
+            <div className="h-[2px] bg-[#C9F3BA] mt-2 w-[66px] mb-4"></div>
+            <ul className="text-xs text-[#CCCCCC]">
               {parsedVariables.map((variable, index) => (
-                <li key={index}>{variable}</li>
+                <li key={index} className="mb-2">{variable}</li>
               ))}
             </ul>
           </div>
           {errorMessage && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-red-200 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md flex flex-col">
-                <div>{errorMessage}</div>
+              <div className="bg-[#FEFEFE] border-l-4 border-[#C9F3BA] text-[#101010] p-4 rounded shadow-md flex flex-col">
+                <div className="mb-3">{errorMessage}</div>
                 <button
                   onClick={clearErrorMessage}
-                  className="bg-blue-500 hover-bg-blue-700 p-2 rounded text-white"
+                  className="bg-[#C9F3BA] hover-bg-blue-700 p-2 rounded text-[#101010]"
                 >
                   Cerrar
                 </button>
